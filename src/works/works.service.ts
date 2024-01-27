@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Work } from './model/work.model';
+import { WorkAggregatedByProject } from './model/aggregations/work-aggregated-by-project.model';
+import { WorksAggregationService } from './works-aggregation.service';
 
 @Injectable()
 export class WorksService {
@@ -41,8 +43,20 @@ export class WorksService {
       hours: 4,
     },
   ];
+  constructor(
+    private readonly worksAggregationService: WorksAggregationService,
+  ) {}
 
   getWorks(): Work[] {
     return this.worksInMemory;
+  }
+
+  getWorksAggregatedByProjectIds(
+    projectIds: number[],
+  ): WorkAggregatedByProject[] {
+    return this.worksAggregationService.aggregateWorksByProjectIds(
+      this.worksInMemory,
+      projectIds,
+    );
   }
 }
