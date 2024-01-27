@@ -71,4 +71,15 @@ export class WorksService {
       employeeIds,
     );
   }
+
+  getWorksAggregatedByEmployeeIdsAndProjectIds(
+    projectIds: number[],
+    employeeIds: number[],
+  ): WorkAggregatedByProjectAndEmployee[] {
+    return this.worksAggregationService.aggregateWorksByEmployeeIdsAndProjectIds(
+      this.worksInMemory,
+      projectIds,
+      employeeIds,
+    );
+  }
 }

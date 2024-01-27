@@ -33,4 +33,15 @@ export class WorksController {
       filter.employeeIds,
     );
   }
+
+  @Get('/byEmployeesAndProjects')
+  getWorksAggregatedByEmployeeIdsAndProjectIds(
+    @Query(new ValidationPipe({ transform: true }))
+    filter: WorksByProjectIdsAndEmployeeIdsDto,
+  ): WorkAggregatedByProjectAndEmployee[] {
+    return this.worksService.getWorksAggregatedByEmployeeIdsAndProjectIds(
+      filter.projectIds,
+      filter.employeeIds,
+    );
+  }
 }

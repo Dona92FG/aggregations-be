@@ -67,4 +67,41 @@ export class WorksAggregationService {
     }
     return worksAggregatedByProjectAndEmployee;
   }
+
+  aggregateWorksByEmployeeIdsAndProjectIds(
+    worksInMemory: Work[],
+    projectIds: number[],
+    employeeIds: number[],
+  ): WorkAggregatedByProjectAndEmployee[] {
+    const workAggregatedByEmployeeAndProject: WorkAggregatedByProjectAndEmployee[] =
+      [];
+    for (const employeeId of employeeIds) {
+      const worksByEmployeeId: Work[] = worksInMemory.filter(
+        (work) => work.employee.id === employeeId,
+      );
+      if (worksByEmployeeId.length > 0) {
+        const employee: string = worksByEmployeeId[0].employee.name;
+        for (const projectId of projectIds) {
+          const worksByProjectId: Work[] = worksByEmployeeId.filter(
+            (work) => work.project.id === projectId,
+          );
+          if (worksByProjectId.length > 0) {
+            const project: string = worksByProjectId[0].project.name;
+            const arrayOfHours: number[] = worksByProjectId.map(
+              (work) => work.hours,
+            );
+            const hours: number = arrayOfHours.reduce((previous, current) => {
+              return previous + current;
+            }, 0);
+            workAggregatedByEmployeeAndProject.push({
+              employee,
+              project,
+              hours,
+            });
+          }
+        }
+      }
+    }
+    return workAggregatedByEmployeeAndProject;
+  }
 }
